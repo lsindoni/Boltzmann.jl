@@ -84,6 +84,9 @@ BernoulliRBM(n_vis::Int, n_hid::Int; sigma=0.01) =
 GRBM(n_vis::Int, n_hid::Int; sigma=0.01) =
     RBM(Float64, Normal, Bernoulli, n_vis, n_hid; sigma=sigma)
 
+"""Same as RBM{Float64,Bernoulli,Bernoulli}"""
+BBRBM(n_vis::Int, n_hid::Int; sigma=0.01) =
+    RBM(Float64, Bernoulli, Bernoulli, n_vis, n_hid; sigma=sigma)
 
 function Base.show(io::IO, rbm::RBM{T,V,H}) where {T,V,H}
     n_vis = size(rbm.vbias, 1)
@@ -105,7 +108,7 @@ function vis_means(rbm::RBM, hid::Mat{T}) where T
 end
 
 
-## samping
+## sampling
 
 function sample(::Type{Degenerate}, means::Mat{T}) where T
     return means

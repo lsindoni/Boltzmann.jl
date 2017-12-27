@@ -12,7 +12,7 @@ end
 
 DBN(namedlayers::Vector{LT}) where {LT<:Tuple{AbstractString,RBM}} =
     DBN(map(p -> p[2], namedlayers), map(p -> p[1], namedlayers))
-    
+
 
 struct DAE <: Net
     layers::Vector{RBM}
@@ -100,3 +100,33 @@ function unroll(dbn::DBN)
     return DAE(layers, layernames)
 end
 
+"""
+    greedy_sample_hiddens(dbn::DBN, vis::Mat)
+
+Generates a sample for the hidden layers, given the visible layer. Proceeds layer by layer.
+"""
+function greedy_sample_hiddens(dbn::DBN, vis::Mat)
+    samples = Vector{Any}()
+    tmp_sample = deepcopy(vis)
+    for bm in dbn.layers
+        tmp_sample = sample_hiddens(bm, tmp_sample)
+        push!(samples, tmp_sample)
+    end
+    return samples[end], samples
+end
+
+"""
+    greedy_sample_visibles(dbn::DBN, hid::Mat)
+
+Generates a sample for the visible layer, given the last hidden layer. Proceeds layer by layer.
+"""
+function greedy_sample_visibles(dbn::DBN, hid::Mat)
+    samples = Vector{Any}()
+    tmp_sample = deepcopy(hid)
+    for bm in reverse(dbn.layers)
+        println(typeof(bm))
+        tmp_sample = Boltzmann.sample_visibles(bm, tmp_sample)
+        push!(samples, tmp_sample)
+    end
+    return samples[end], samples
+end
