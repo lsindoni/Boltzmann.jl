@@ -69,10 +69,11 @@ if haskey(ENV, "JULIA_TEST_GROUPS")
 end
 
 tests = [
-    "utils",
-    "rbm",
-    "nets",
-    "conditional",
+    #"utils",
+    #"rbm",
+    #"nets",
+    #"conditional",
+    "io",
 ]
 
 for t in tests
