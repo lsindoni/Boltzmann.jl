@@ -4,7 +4,7 @@ using MLDatasets
 if :integration in TEST_GROUPS
     @testset "Nets Integration" begin
         X, y = MNIST.traindata()
-	    X = Float64.(reshape(X, 784, :)[:, 1:1000])    # take only 1000 observations for speed
+        X = Float64.(reshape(X, 784, :)[:, 1:1000])    # take only 1000 observations for speed
         X = X / (maximum(X) - (minimum(X)))  # normalize to [0..1]
 
         layers = [("vis", GRBM(784, 256)),
